@@ -10,6 +10,10 @@ import (
 	"github.com/ofadiman/pg-go/src/utils"
 )
 
+func init() {
+	gofakeit.Seed(375)
+}
+
 type User struct {
 	ID string `db:"id"`
 
@@ -81,13 +85,15 @@ func (this *UserRepository) insertMany() []User {
 }
 
 func main() {
-	db, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
+	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+	defer sqlxdb.Close()
 
-	repository := UserRepository{db: db}
+	sqlxdb.Exec("TRUNCATE TABLE users RESTART IDENTITY CASCADE")
+
+	repository := UserRepository{db: sqlxdb}
 
 	user := repository.insertOne()
 	utils.Print(user)

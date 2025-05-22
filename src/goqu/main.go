@@ -10,6 +10,10 @@ import (
 	"github.com/ofadiman/pg-go/src/utils"
 )
 
+func init() {
+	gofakeit.Seed(478)
+}
+
 type User struct {
 	ID string `db:"id" goqu:"skipinsert"`
 
@@ -82,6 +86,8 @@ func main() {
 		panic(err)
 	}
 	defer sqlxdb.Close()
+
+	sqlxdb.Exec("TRUNCATE TABLE users RESTART IDENTITY CASCADE")
 
 	db := goqu.New("postgres", sqlxdb.DB)
 
