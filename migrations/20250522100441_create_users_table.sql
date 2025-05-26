@@ -1,27 +1,24 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+create extension IF not exists "uuid-ossp";
 
-CREATE TABLE users (
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-
-    first_name text NOT NULL,
-    last_name text NOT NULL,
-    email text NOT NULL,
-    email_verified boolean NOT NULL,
-    phone_number text NOT NULL,
-    gender text NOT NULL,
-    city text NOT NULL,
-    country text NOT NULL,
-    street text NOT NULL,
-    street_number text NOT NULL,
-    zip_code text NOT NULL,
-    birthday timestamptz NOT NULL,
-
-    created_at timestamptz NOT NULL,
-    updated_at timestamptz DEFAULT NULL,
-
-    CONSTRAINT unique_email UNIQUE (email),
-    CONSTRAINT unique_phone_number UNIQUE (phone_number)
+create table users (
+  id uuid primary key default uuid_generate_v4(),
+  first_name text not null,
+  last_name text not null,
+  email text not null,
+  email_verified boolean not null,
+  phone_number text not null,
+  gender text not null,
+  city text not null,
+  country text not null,
+  street text not null,
+  street_number text not null,
+  zip_code text not null,
+  birthday timestamptz not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz default null,
+  constraint unique_email unique (email),
+  constraint unique_phone_number unique (phone_number)
 );
 -- +goose StatementEnd
