@@ -34,5 +34,5 @@ type Post struct {
 }
 
 func main() {
-	Transactions()
+	Cte()
 }
