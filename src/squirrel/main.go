@@ -43,8 +43,8 @@ func (this *UserRepository) insertOne() User {
 		StatementBuilder.
 		PlaceholderFormat(squirrel.Dollar).
 		Insert("users").
-		Columns("first_name", "last_name", "email", "email_verified", "phone_number", "gender", "city", "country", "street", "street_number", "zip_code", "birthday", "created_at").
-		Values(gofakeit.FirstName(), gofakeit.LastName(), gofakeit.Email(), gofakeit.Bool(), gofakeit.PhoneFormatted(), gofakeit.Gender(), gofakeit.City(), gofakeit.Country(), gofakeit.Street(), gofakeit.StreetNumber(), gofakeit.Zip(), gofakeit.PastDate(), gofakeit.PastDate()).
+		Columns("id", "first_name", "last_name", "email", "email_verified", "phone_number", "gender", "city", "country", "street", "street_number", "zip_code", "birthday", "created_at").
+		Values(gofakeit.UUID(), gofakeit.FirstName(), gofakeit.LastName(), gofakeit.Email(), gofakeit.Bool(), gofakeit.PhoneFormatted(), gofakeit.Gender(), gofakeit.City(), gofakeit.Country(), gofakeit.Street(), gofakeit.StreetNumber(), gofakeit.Zip(), gofakeit.PastDate(), gofakeit.PastDate()).
 		Suffix("RETURNING *").
 		ToSql()
 	if err != nil {
@@ -65,10 +65,10 @@ func (this *UserRepository) insertMany() []User {
 		StatementBuilder.
 		PlaceholderFormat(squirrel.Dollar).
 		Insert("users").
-		Columns("first_name", "last_name", "email", "email_verified", "phone_number", "gender", "city", "country", "street", "street_number", "zip_code", "birthday", "created_at").
-		Values(gofakeit.FirstName(), gofakeit.LastName(), gofakeit.Email(), gofakeit.Bool(), gofakeit.PhoneFormatted(), gofakeit.Gender(), gofakeit.City(), gofakeit.Country(), gofakeit.Street(), gofakeit.StreetNumber(), gofakeit.Zip(), gofakeit.PastDate(), gofakeit.PastDate()).
-		Values(gofakeit.FirstName(), gofakeit.LastName(), gofakeit.Email(), gofakeit.Bool(), gofakeit.PhoneFormatted(), gofakeit.Gender(), gofakeit.City(), gofakeit.Country(), gofakeit.Street(), gofakeit.StreetNumber(), gofakeit.Zip(), gofakeit.PastDate(), gofakeit.PastDate()).
-		Values(gofakeit.FirstName(), gofakeit.LastName(), gofakeit.Email(), gofakeit.Bool(), gofakeit.PhoneFormatted(), gofakeit.Gender(), gofakeit.City(), gofakeit.Country(), gofakeit.Street(), gofakeit.StreetNumber(), gofakeit.Zip(), gofakeit.PastDate(), gofakeit.PastDate()).
+		Columns("id", "first_name", "last_name", "email", "email_verified", "phone_number", "gender", "city", "country", "street", "street_number", "zip_code", "birthday", "created_at").
+		Values(gofakeit.UUID(), gofakeit.FirstName(), gofakeit.LastName(), gofakeit.Email(), gofakeit.Bool(), gofakeit.PhoneFormatted(), gofakeit.Gender(), gofakeit.City(), gofakeit.Country(), gofakeit.Street(), gofakeit.StreetNumber(), gofakeit.Zip(), gofakeit.PastDate(), gofakeit.PastDate()).
+		Values(gofakeit.UUID(), gofakeit.FirstName(), gofakeit.LastName(), gofakeit.Email(), gofakeit.Bool(), gofakeit.PhoneFormatted(), gofakeit.Gender(), gofakeit.City(), gofakeit.Country(), gofakeit.Street(), gofakeit.StreetNumber(), gofakeit.Zip(), gofakeit.PastDate(), gofakeit.PastDate()).
+		Values(gofakeit.UUID(), gofakeit.FirstName(), gofakeit.LastName(), gofakeit.Email(), gofakeit.Bool(), gofakeit.PhoneFormatted(), gofakeit.Gender(), gofakeit.City(), gofakeit.Country(), gofakeit.Street(), gofakeit.StreetNumber(), gofakeit.Zip(), gofakeit.PastDate(), gofakeit.PastDate()).
 		Suffix("RETURNING *").
 		ToSql()
 	if err != nil {
@@ -82,6 +82,54 @@ func (this *UserRepository) insertMany() []User {
 	}
 
 	return users
+}
+
+func (this *UserRepository) selectById() User {
+	sql, args, err := squirrel.
+		StatementBuilder.
+		PlaceholderFormat(squirrel.Dollar).
+		Select("*").
+		From("users").
+		Where(squirrel.Eq{"id": "8917f080-70ea-4c89-b86c-859d617f3a0b"}).
+		ToSql()
+	if err != nil {
+		panic(err)
+	}
+
+	var user User
+	err = this.db.Get(&user, sql, args...)
+	if err != nil {
+		panic(err)
+	}
+
+	return user
+}
+
+func (this *UserRepository) paginate() []User {
+	statement := squirrel.
+		StatementBuilder.
+		PlaceholderFormat(squirrel.Dollar).
+		Select("*").
+		From("users")
+	statement = statement.Where(squirrel.Or{
+		squirrel.Eq{"id": "49b7cf84-d525-4456-af6e-5b4015473cf6"},
+		squirrel.Eq{"first_name": []string{"Kirsten", "Coleman"}},
+	})
+	statement = statement.Limit(100)
+	statement = statement.Offset(0)
+
+	sql, args, err := statement.ToSql()
+	if err != nil {
+		panic(err)
+	}
+
+	var user []User
+	err = this.db.Select(&user, sql, args...)
+	if err != nil {
+		panic(err)
+	}
+
+	return user
 }
 
 func main() {
@@ -100,4 +148,10 @@ func main() {
 
 	users := repository.insertMany()
 	utils.Print(users)
+
+	userById := repository.selectById()
+	utils.Print(userById)
+
+	paginated := repository.paginate()
+	utils.Print(paginated)
 }
