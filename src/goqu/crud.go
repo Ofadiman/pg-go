@@ -109,6 +109,39 @@ func (this *UserRepository) paginate() []User {
 	return users
 }
 
+func (this *UserRepository) updateById() User {
+	var user User
+	statement := this.db.Update("users").
+		Set(goqu.Record{
+			"first_name": "Jack",
+			"last_name":  "Sparrow",
+			"updated_at": goqu.Literal("NOW()"),
+		}).
+		Where(goqu.Ex{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"}).
+		Returning(goqu.Star())
+
+	_, err := statement.Executor().ScanStruct(&user)
+	if err != nil {
+		panic(err)
+	}
+	return user
+}
+
+func (this *UserRepository) updateAll() []User {
+	var users []User
+	statement := this.db.Update("users").
+		Set(goqu.Record{
+			"updated_at": goqu.Literal("NOW()"),
+		}).
+		Returning(goqu.Star())
+
+	err := statement.Executor().ScanStructs(&users)
+	if err != nil {
+		panic(err)
+	}
+	return users
+}
+
 func main() {
 	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
 	if err != nil {
@@ -133,4 +166,10 @@ func main() {
 
 	paginated := repository.paginate()
 	utils.Print(paginated)
+
+	updateUserById := repository.updateById()
+	utils.Print(updateUserById)
+
+	updatedUsers := repository.updateAll()
+	utils.Print(updatedUsers)
 }
