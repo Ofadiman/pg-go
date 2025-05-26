@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	gofakeit.Seed(478)
+	gofakeit.Seed(1)
 }
 
 type User struct {

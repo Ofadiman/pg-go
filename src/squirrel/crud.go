@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	gofakeit.Seed(375)
+	gofakeit.Seed(1)
 }
 
 type User struct {
@@ -90,7 +90,7 @@ func (this *UserRepository) selectById() User {
 		PlaceholderFormat(squirrel.Dollar).
 		Select("*").
 		From("users").
-		Where(squirrel.Eq{"id": "8917f080-70ea-4c89-b86c-859d617f3a0b"}).
+		Where(squirrel.Eq{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"}).
 		ToSql()
 	if err != nil {
 		panic(err)
@@ -112,8 +112,8 @@ func (this *UserRepository) paginate() []User {
 		Select("*").
 		From("users")
 	statement = statement.Where(squirrel.Or{
-		squirrel.Eq{"id": "49b7cf84-d525-4456-af6e-5b4015473cf6"},
-		squirrel.Eq{"first_name": []string{"Kirsten", "Coleman"}},
+		squirrel.Eq{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"},
+		squirrel.Eq{"first_name": []string{"Laverna", "Aditya"}},
 	})
 	statement = statement.Limit(100)
 	statement = statement.Offset(0)
