@@ -1,27 +1,15 @@
 # pg-go
 
-**pg-go** is a benchmarking project that compares various query builder libraries available in Go (Golang).
+**pg-go** is a project that compares various database access libraries available in Go (Golang).
 
-## Database Migrations
+## What is taken into consideration?
 
-This project uses [Goose](https://github.com/pressly/goose) for managing database migrations.
+- **CRUD operations**: Create, Read, Update, Delete.
+- **Joins**: Ability to perform SQL joins and map results to Go structs.
+- **Transactions**: Support for database transactions.
+- **Common Table Expressions (CTE)**: Support for `WITH` queries.
+- **Aggregate functions**: Support for SQL aggregate functions like `COUNT`, `SUM`, etc.
 
-### Creating a New Migration
+## Help
 
-To create a new migration file, navigate to the `migrations` directory and run:
-
-```sh
-goose create create_users_table sql
-```
-
-This command will generate a new SQL migration file with a timestamped filename.
-
-### Applying Migrations
-
-To apply all pending migrations, execute the following command from the project root:
-
-```sh
-goose up
-```
-
-This will run all migrations in the correct order.
+Makefile has documentation available under `make help`.
