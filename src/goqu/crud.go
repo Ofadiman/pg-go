@@ -15,7 +15,7 @@ func init() {
 }
 
 type User struct {
-	ID string `db:"id" goqu:"skipinsert"`
+	ID string `db:"id"`
 
 	CreatedAt time.Time  `db:"created_at"`
 	UpdatedAt *time.Time `db:"updated_at"`
@@ -40,6 +40,7 @@ type UserRepository struct {
 
 func createUser() User {
 	return User{
+		ID:            gofakeit.UUID(),
 		FirstName:     gofakeit.FirstName(),
 		LastName:      gofakeit.LastName(),
 		Email:         gofakeit.Email(),
@@ -56,28 +57,56 @@ func createUser() User {
 	}
 }
 
-func (r *UserRepository) insertOne() User {
+func (this *UserRepository) insertOne() User {
 	user := createUser()
 	var inserted User
 
-	ds := r.db.Insert("users").Rows(user).Returning(goqu.Star())
-	_, err := ds.Executor().ScanStruct(&inserted)
+	statement := this.db.Insert("users").Rows(user).Returning(goqu.Star())
+	_, err := statement.Executor().ScanStruct(&inserted)
 	if err != nil {
 		panic(err)
 	}
 	return inserted
 }
 
-func (r *UserRepository) insertMany() []User {
+func (this *UserRepository) insertMany() []User {
 	users := []User{createUser(), createUser(), createUser()}
 	var inserted []User
 
-	ds := r.db.Insert("users").Rows(users).Returning(goqu.Star())
-	err := ds.Executor().ScanStructs(&inserted)
+	statement := this.db.Insert("users").Rows(users).Returning(goqu.Star())
+	err := statement.Executor().ScanStructs(&inserted)
 	if err != nil {
 		panic(err)
 	}
 	return inserted
+}
+
+func (this *UserRepository) selectById() User {
+	var user User
+	statement := this.db.From("users").
+		Where(goqu.Ex{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"})
+	_, err := statement.Executor().ScanStruct(&user)
+	if err != nil {
+		panic(err)
+	}
+	return user
+}
+
+func (this *UserRepository) paginate() []User {
+	var users []User
+	statement := this.db.From("users")
+	statement.Where(goqu.Or(
+		goqu.Ex{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"},
+		goqu.Ex{"first_name": []string{"Laverna", "Aditya"}},
+	))
+	statement = statement.Limit(100)
+	statement = statement.Offset(0)
+
+	err := statement.Executor().ScanStructs(&users)
+	if err != nil {
+		panic(err)
+	}
+	return users
 }
 
 func main() {
@@ -98,4 +127,10 @@ func main() {
 
 	users := repository.insertMany()
 	utils.Print(users)
+
+	userById := repository.selectById()
+	utils.Print(userById)
+
+	paginated := repository.paginate()
+	utils.Print(paginated)
 }
