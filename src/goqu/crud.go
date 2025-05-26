@@ -142,6 +142,31 @@ func (this *UserRepository) updateAll() []User {
 	return users
 }
 
+func (this *UserRepository) deleteById() User {
+	var user User
+	statement := this.db.Delete("users").
+		Where(goqu.Ex{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"}).
+		Returning(goqu.Star())
+
+	_, err := statement.Executor().ScanStruct(&user)
+	if err != nil {
+		panic(err)
+	}
+	return user
+}
+
+func (this *UserRepository) deleteAll() []User {
+	var users []User
+	statement := this.db.Delete("users").
+		Returning(goqu.Star())
+
+	err := statement.Executor().ScanStructs(&users)
+	if err != nil {
+		panic(err)
+	}
+	return users
+}
+
 func main() {
 	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
 	if err != nil {
@@ -172,4 +197,10 @@ func main() {
 
 	updatedUsers := repository.updateAll()
 	utils.Print(updatedUsers)
+
+	deletedUserById := repository.deleteById()
+	utils.Print(deletedUserById)
+
+	deletedUsers := repository.deleteAll()
+	utils.Print(deletedUsers)
 }
