@@ -123,13 +123,58 @@ func (this *UserRepository) paginate() []User {
 		panic(err)
 	}
 
-	var user []User
-	err = this.db.Select(&user, sql, args...)
+	var users []User
+	err = this.db.Select(&users, sql, args...)
+	if err != nil {
+		panic(err)
+	}
+
+	return users
+}
+
+func (this *UserRepository) updateById() User {
+	sql, args, err := squirrel.
+		StatementBuilder.
+		PlaceholderFormat(squirrel.Dollar).
+		Update("users").
+		Set("first_name", "Jack").
+		Set("last_name", "Sparrow").
+		Set("updated_at", squirrel.Expr("NOW()")).
+		Where(squirrel.Eq{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"}).
+		Suffix("RETURNING *").
+		ToSql()
+	if err != nil {
+		panic(err)
+	}
+
+	var user User
+	err = this.db.Get(&user, sql, args...)
 	if err != nil {
 		panic(err)
 	}
 
 	return user
+}
+
+func (this *UserRepository) updateAll() []User {
+	sql, args, err := squirrel.
+		StatementBuilder.
+		PlaceholderFormat(squirrel.Dollar).
+		Update("users").
+		Set("updated_at", squirrel.Expr("NOW()")).
+		Suffix("RETURNING *").
+		ToSql()
+	if err != nil {
+		panic(err)
+	}
+
+	var users []User
+	err = this.db.Select(&users, sql, args...)
+	if err != nil {
+		panic(err)
+	}
+
+	return users
 }
 
 func main() {
@@ -154,4 +199,10 @@ func main() {
 
 	paginated := repository.paginate()
 	utils.Print(paginated)
+
+	updatedUserById := repository.updateById()
+	utils.Print(updatedUserById)
+
+	updatedUsers := repository.updateAll()
+	utils.Print(updatedUsers)
 }
