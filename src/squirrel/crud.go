@@ -177,6 +177,47 @@ func (this *UserRepository) updateAll() []User {
 	return users
 }
 
+func (this *UserRepository) deleteById() User {
+	sql, args, err := squirrel.
+		StatementBuilder.
+		PlaceholderFormat(squirrel.Dollar).
+		Delete("users").
+		Where(squirrel.Eq{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"}).
+		Suffix("RETURNING *").
+		ToSql()
+	if err != nil {
+		panic(err)
+	}
+
+	var user User
+	err = this.db.Get(&user, sql, args...)
+	if err != nil {
+		panic(err)
+	}
+
+	return user
+}
+
+func (this *UserRepository) deleteAll() []User {
+	sql, args, err := squirrel.
+		StatementBuilder.
+		PlaceholderFormat(squirrel.Dollar).
+		Delete("users").
+		Suffix("RETURNING *").
+		ToSql()
+	if err != nil {
+		panic(err)
+	}
+
+	var users []User
+	err = this.db.Select(&users, sql, args...)
+	if err != nil {
+		panic(err)
+	}
+
+	return users
+}
+
 func main() {
 	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
 	if err != nil {
@@ -205,4 +246,10 @@ func main() {
 
 	updatedUsers := repository.updateAll()
 	utils.Print(updatedUsers)
+
+	deletedUserById := repository.deleteById()
+	utils.Print(deletedUserById)
+
+	deletedUsers := repository.deleteAll()
+	utils.Print(deletedUsers)
 }
