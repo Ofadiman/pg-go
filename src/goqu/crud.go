@@ -167,7 +167,7 @@ func (this *UserRepository) deleteAll() []User {
 	return users
 }
 
-func main() {
+func Crud() {
 	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
 	if err != nil {
 		panic(err)
