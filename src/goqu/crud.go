@@ -73,9 +73,9 @@ func (this *UserRepository) selectById() User {
 func (this *UserRepository) paginate() []User {
 	var users []User
 	statement := this.db.From("users")
-	statement.Where(goqu.Or(
-		goqu.Ex{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"},
-		goqu.Ex{"first_name": []string{"Laverna", "Aditya"}},
+	statement = statement.Where(goqu.Or(
+		goqu.C("id").Eq("064be158-eb2c-41dc-9308-8585917cafee"),
+		goqu.C("first_name").In([]string{"Rubye", "Myron"}),
 	))
 	statement = statement.Limit(100)
 	statement = statement.Offset(0)
