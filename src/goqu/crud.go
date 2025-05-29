@@ -62,7 +62,7 @@ func (this *UserRepository) insertMany() []User {
 func (this *UserRepository) selectById() User {
 	var user User
 	statement := this.db.From("users").
-		Where(goqu.Ex{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"})
+		Where(goqu.C("id").Eq("b80bacdc-c556-426d-b31c-2dea8f7eed48"))
 	_, err := statement.Executor().ScanStruct(&user)
 	if err != nil {
 		panic(err)
@@ -95,7 +95,7 @@ func (this *UserRepository) updateById() User {
 			"last_name":  "Sparrow",
 			"updated_at": goqu.Literal("NOW()"),
 		}).
-		Where(goqu.Ex{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"}).
+		Where(goqu.C("id").Eq("b80bacdc-c556-426d-b31c-2dea8f7eed48")).
 		Returning(goqu.Star())
 
 	_, err := statement.Executor().ScanStruct(&user)
@@ -123,7 +123,7 @@ func (this *UserRepository) updateAll() []User {
 func (this *UserRepository) deleteById() User {
 	var user User
 	statement := this.db.Delete("users").
-		Where(goqu.Ex{"id": "b80bacdc-c556-426d-b31c-2dea8f7eed48"}).
+		Where(goqu.C("id").Eq("064be158-eb2c-41dc-9308-8585917cafee")).
 		Returning(goqu.Star())
 
 	_, err := statement.Executor().ScanStruct(&user)
