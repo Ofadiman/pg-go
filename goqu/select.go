@@ -54,3 +54,37 @@ func SelectUsersFromOmahaBostonIndianapolis() {
 
 	utils.Save(utils.GetPackageName(), users)
 }
+
+func SelectOldEnoughVerifiedMalesAndFemales() {
+	seed.Seed()
+
+	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
+	if err != nil {
+		panic(err)
+	}
+	defer sqlxdb.Close()
+
+	db := goqu.New("postgres", sqlxdb.DB)
+
+	var users []User
+	statement := db.Select(goqu.Star()).
+		From("users").
+		Where(goqu.C("email_verified").Eq(true)).
+		Where(goqu.Or(
+			goqu.And(
+				goqu.C("gender").Eq("male"),
+				goqu.L("age(birthday)").Gte(goqu.L("interval '21 years'")),
+			),
+			goqu.And(
+				goqu.C("gender").Eq("female"),
+				goqu.L("age(birthday)").Gte(goqu.L("interval '18 years'")),
+			),
+		))
+
+	err = statement.Executor().ScanStructs(&users)
+	if err != nil {
+		panic(err)
+	}
+
+	utils.Save(utils.GetPackageName(), users)
+}

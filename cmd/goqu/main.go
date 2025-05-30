@@ -7,4 +7,5 @@ import (
 func main() {
 	goqu.SelectUserByID()
 	goqu.SelectUsersFromOmahaBostonIndianapolis()
+	goqu.SelectOldEnoughVerifiedMalesAndFemales()
 }
