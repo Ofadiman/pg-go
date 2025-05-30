@@ -4,6 +4,8 @@ MAKEFLAGS += -s
 # Makes all possible targets in the Makefile non-file targets, ensuring they are always executed regardless of the presence of files with matching names.
 .PHONY: *
 
+$(shell command -v goose >/dev/null 2>&1 || { echo "The goose package is not installed. Please install it using the official documentation: https://github.com/pressly/goose" >&2; exit 1; })
+
 # Set environment variable for all shell commands run in the scope of makefile. This variable is not set in the main shell. 
 export GOOSE_DBSTRING = postgres://admin:password@localhost:5432/pg-go
 export GOOSE_DRIVER = postgres
