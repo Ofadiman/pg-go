@@ -6,6 +6,9 @@ import (
 )
 
 func Print(value any) {
-	b, _ := json.MarshalIndent(value, "", "  ")
-	fmt.Println(string(b))
+	bytes, err := json.MarshalIndent(value, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(string(bytes))
 }
