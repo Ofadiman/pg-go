@@ -19,7 +19,8 @@ func SelectUserByID() {
 	db := goqu.New("postgres", sqlxdb.DB)
 
 	var user User
-	statement := db.From("users").
+	statement := db.Select(goqu.Star()).
+		From("users").
 		Where(goqu.C("id").Eq("a5aef435-0ac5-4093-bcc5-71334bd8ffe8"))
 
 	_, err = statement.Executor().ScanStruct(&user)
@@ -28,4 +29,28 @@ func SelectUserByID() {
 	}
 
 	utils.Save(utils.GetPackageName(), user)
+}
+
+func SelectUsersFromOmahaBostonIndianapolis() {
+	seed.Seed()
+
+	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
+	if err != nil {
+		panic(err)
+	}
+	defer sqlxdb.Close()
+
+	db := goqu.New("postgres", sqlxdb.DB)
+
+	var users []User
+	statement := db.Select(goqu.Star()).
+		From("users").
+		Where(goqu.L("address ->> 'city'").In([]string{"Omaha", "Boston", "Indianapolis"}))
+
+	err = statement.Executor().ScanStructs(&users)
+	if err != nil {
+		panic(err)
+	}
+
+	utils.Save(utils.GetPackageName(), users)
 }
