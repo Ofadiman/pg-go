@@ -1,4 +1,8 @@
-.PHONY: * help
+# This sets the `-s` flag for every make invocation, ensuring that all targets run silently.
+MAKEFLAGS += -s
+
+# Makes all possible targets in the Makefile non-file targets, ensuring they are always executed regardless of the presence of files with matching names.
+.PHONY: *
 
 # Set environment variable for all shell commands run in the scope of makefile. This variable is not set in the main shell. 
 export GOOSE_DBSTRING = postgres://admin:password@localhost:5432/pg-go
@@ -25,7 +29,7 @@ database_migrate:  ## Run all pending database migrations.
 	goose up
 
 database_seed:  ## Seed the database with initial data.
-	go run src/seed/main.go
+	go run cmd/seed/main.go
 
 database_new_migration:  ## Create a new migration. Usage: "make database_new_migration name=your_migration_name".
 	goose create $(name) sql
