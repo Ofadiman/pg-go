@@ -9,4 +9,5 @@ func main() {
 	goqu.SelectUsersFromOmahaBostonIndianapolis()
 	goqu.SelectOldEnoughVerifiedMalesAndFemales()
 	goqu.SelectAnStart()
+	goqu.SelectNotOlderThanEighteenNorVerified()
 }
