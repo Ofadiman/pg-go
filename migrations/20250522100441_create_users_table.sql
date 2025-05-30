@@ -8,8 +8,8 @@ create table users (
   created_at timestamptz not null default now(),
   updated_at timestamptz default null,
 
+  address jsonb not null,
   birthday timestamptz not null,
-  country text not null,
   email text not null,
   email_verified boolean not null,
   first_name text not null,

@@ -1,6 +1,9 @@
 package seed
 
 import (
+	"database/sql/driver"
+	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -11,14 +14,44 @@ import (
 	"github.com/ofadiman/pg-go/src/utils"
 )
 
+type Address struct {
+	City         string `json:"city"`
+	Country      string `json:"country"`
+	Street       string `json:"street"`
+	StreetNumber string `json:"street_number"`
+	ZipCode      string `json:"zip_code"`
+}
+
+func (a Address) Value() (driver.Value, error) {
+	return json.Marshal(a)
+}
+
+func (a *Address) Scan(value any) error {
+	if value == nil {
+		return nil
+	}
+
+	var b []byte
+	switch v := value.(type) {
+	case []byte:
+		b = v
+	case string:
+		b = []byte(v)
+	default:
+		return errors.New("cannot scan into Address: unsupported type")
+	}
+
+	return json.Unmarshal(b, a)
+}
+
 type User struct {
 	ID string `db:"id"`
 
 	CreatedAt time.Time  `db:"created_at"`
 	UpdatedAt *time.Time `db:"updated_at"`
 
+	Address       Address   `db:"address"`
 	Birthday      time.Time `db:"birthday"`
-	Country       string    `db:"country"`
 	Email         string    `db:"email"`
 	EmailVerified bool      `db:"email_verified"`
 	FirstName     string    `db:"first_name"`
@@ -72,7 +105,7 @@ var emojis = []string{
 	"clapping_hands",
 }
 
-func Seed(message string) {
+func Seed() {
 	gofakeit.Seed(1)
 
 	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
@@ -109,15 +142,21 @@ func Seed(message string) {
 		updatedAt := createdAt.Add(time.Hour * 24 * time.Duration(gofakeit.IntN(365)))
 
 		user := User{
-			ID:            gofakeit.UUID(),
-			CreatedAt:     createdAt,
-			UpdatedAt:     &updatedAt,
+			ID:        gofakeit.UUID(),
+			CreatedAt: createdAt,
+			UpdatedAt: &updatedAt,
+			Address: Address{
+				City:         gofakeit.City(),
+				Country:      gofakeit.Country(),
+				Street:       gofakeit.Street(),
+				StreetNumber: gofakeit.StreetNumber(),
+				ZipCode:      gofakeit.Zip(),
+			},
 			FirstName:     firstName,
 			LastName:      lastName,
 			Email:         email,
 			EmailVerified: gofakeit.Bool(),
 			Gender:        gofakeit.Gender(),
-			Country:       gofakeit.Country(),
 			Birthday: gofakeit.DateRange(
 				time.Date(1950, time.January, 1, 0, 0, 0, 0, time.UTC),
 				time.Date(2015, time.January, 1, 0, 0, 0, 0, time.UTC),
@@ -127,7 +166,10 @@ func Seed(message string) {
 		users = append(users, user)
 	}
 
-	db.Insert("users").Rows(users).Executor().Exec()
+	_, err = db.Insert("users").Rows(users).Executor().Exec()
+	if err != nil {
+		panic(err)
+	}
 
 	var posts []Post
 
@@ -152,7 +194,10 @@ func Seed(message string) {
 		}
 	}
 
-	db.Insert("posts").Rows(posts).Executor().Exec()
+	_, err = db.Insert("posts").Rows(posts).Executor().Exec()
+	if err != nil {
+		panic(err)
+	}
 
 	var comments []Comment
 
@@ -199,7 +244,10 @@ func Seed(message string) {
 		}
 	}
 
-	db.Insert("comments").Rows(comments).Executor().Exec()
+	_, err = db.Insert("comments").Rows(comments).Executor().Exec()
+	if err != nil {
+		panic(err)
+	}
 
 	var reactions []Reaction
 
@@ -219,5 +267,8 @@ func Seed(message string) {
 		}
 	}
 
-	db.Insert("reactions").Rows(reactions).Executor().Exec()
+	_, err = db.Insert("reactions").Rows(reactions).Executor().Exec()
+	if err != nil {
+		panic(err)
+	}
 }
