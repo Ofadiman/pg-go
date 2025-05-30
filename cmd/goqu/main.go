@@ -8,4 +8,5 @@ func main() {
 	goqu.SelectUserByID()
 	goqu.SelectUsersFromOmahaBostonIndianapolis()
 	goqu.SelectOldEnoughVerifiedMalesAndFemales()
+	goqu.SelectAnStart()
 }

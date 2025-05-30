@@ -88,3 +88,27 @@ func SelectOldEnoughVerifiedMalesAndFemales() {
 
 	utils.Save(utils.GetPackageName(), users)
 }
+
+func SelectAnStart() {
+	seed.Seed()
+
+	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
+	if err != nil {
+		panic(err)
+	}
+	defer sqlxdb.Close()
+
+	db := goqu.New("postgres", sqlxdb.DB)
+
+	var users []User
+	statement := db.Select(goqu.Star()).
+		From("users").
+		Where(goqu.C("first_name").Like("An%"))
+
+	err = statement.Executor().ScanStructs(&users)
+	if err != nil {
+		panic(err)
+	}
+
+	utils.Save(utils.GetPackageName(), users)
+}
