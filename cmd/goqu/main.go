@@ -1,7 +1,9 @@
 package main
 
-import "github.com/ofadiman/pg-go/seed"
+import (
+	"github.com/ofadiman/pg-go/goqu"
+)
 
 func main() {
-	seed.Seed()
+	goqu.SelectUserByID()
 }
