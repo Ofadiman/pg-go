@@ -82,3 +82,8 @@ type UserIdsByCountry struct {
 	Total   int     `db:"total"`
 	UserIDs UserIDs `db:"user_ids"`
 }
+
+type MostPopularAgeGroup struct {
+	Total int `db:"total"`
+	Age   int `db:"age"`
+}

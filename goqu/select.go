@@ -166,3 +166,41 @@ func SelectUserIDsByCountry() {
 
 	utils.Save(utils.GetPackageName(), userIDsByCountry)
 }
+
+func SelectThreeMostPopularAgeGroups() {
+	seed.Seed()
+
+	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
+	if err != nil {
+		panic(err)
+	}
+	defer sqlxdb.Close()
+
+	db := goqu.New("postgres", sqlxdb.DB)
+
+	var mostPopularAgeGroups []MostPopularAgeGroup
+	statement := db.From("ranked_users").
+		With(
+			"ranked_users",
+			goqu.From("users").
+				Select(
+					goqu.Literal("extract('year' from age(birthday))").As("age"),
+					goqu.COUNT("*").As("total"),
+					goqu.Literal("dense_rank() OVER (ORDER BY count(*) DESC)").As("rank"),
+				).
+				GroupBy(goqu.Literal("extract('year' from age(birthday))")),
+		).
+		Select(
+			goqu.C("age"),
+			goqu.C("total"),
+		).
+		Order(goqu.C("total").Desc(), goqu.C("age").Desc()).
+		Where(goqu.C("rank").Lte(3))
+
+	err = statement.Executor().ScanStructs(&mostPopularAgeGroups)
+	if err != nil {
+		panic(err)
+	}
+
+	utils.Save(utils.GetPackageName(), mostPopularAgeGroups)
+}
