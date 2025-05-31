@@ -137,3 +137,32 @@ func SelectNotOlderThanEighteenNorVerified() {
 
 	utils.Save(utils.GetPackageName(), users)
 }
+
+func SelectUserIDsByCountry() {
+	seed.Seed()
+
+	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
+	if err != nil {
+		panic(err)
+	}
+	defer sqlxdb.Close()
+
+	db := goqu.New("postgres", sqlxdb.DB)
+
+	var userIDsByCountry []UserIdsByCountry
+	statement := db.Select(
+		goqu.COUNT("*").As("total"),
+		goqu.Literal("address ->> 'country'").As("country"),
+		goqu.Literal("json_agg(id)").As("user_ids"),
+	).
+		From("users").
+		GroupBy(goqu.L("address ->> 'country'")).
+		Order(goqu.C("total").Desc())
+
+	err = statement.Executor().ScanStructs(&userIDsByCountry)
+	if err != nil {
+		panic(err)
+	}
+
+	utils.Save(utils.GetPackageName(), userIDsByCountry)
+}

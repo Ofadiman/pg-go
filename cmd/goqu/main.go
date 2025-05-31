@@ -10,4 +10,5 @@ func main() {
 	goqu.SelectOldEnoughVerifiedMalesAndFemales()
 	goqu.SelectAnStart()
 	goqu.SelectNotOlderThanEighteenNorVerified()
+	goqu.SelectUserIDsByCountry()
 }

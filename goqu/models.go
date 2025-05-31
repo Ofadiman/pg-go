@@ -4,6 +4,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"time"
 )
 
@@ -50,4 +51,34 @@ type User struct {
 	FirstName     string    `db:"first_name"`
 	Gender        string    `db:"gender"`
 	LastName      string    `db:"last_name"`
+}
+
+type UserIDs []string
+
+func (u *UserIDs) Scan(value any) error {
+	if value == nil {
+		return nil
+	}
+
+	var data []byte
+	switch v := value.(type) {
+	case []byte:
+		data = v
+	case string:
+		data = []byte(v)
+	default:
+		return fmt.Errorf("unsupported type: %T", value)
+	}
+
+	return json.Unmarshal(data, u)
+}
+
+func (u UserIDs) Value() (driver.Value, error) {
+	return json.Marshal(u)
+}
+
+type UserIdsByCountry struct {
+	Country string  `db:"country"`
+	Total   int     `db:"total"`
+	UserIDs UserIDs `db:"user_ids"`
 }
