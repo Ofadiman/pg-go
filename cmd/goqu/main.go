@@ -13,4 +13,5 @@ func main() {
 	goqu.SelectUserIDsByCountry()
 	goqu.SelectThreeMostPopularAgeGroups()
 	goqu.SelectMostRecentPostsWithRelatedRecords()
+	goqu.InsertUser()
 }

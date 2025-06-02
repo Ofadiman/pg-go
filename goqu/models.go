@@ -39,7 +39,7 @@ func (a *Address) Scan(value any) error {
 }
 
 type User struct {
-	ID string `db:"id"`
+	ID string `db:"id" goqu:"skipinsert"`
 
 	CreatedAt time.Time  `db:"created_at"`
 	UpdatedAt *time.Time `db:"updated_at"`
