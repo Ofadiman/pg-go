@@ -41,7 +41,7 @@ func (a *Address) Scan(value any) error {
 type User struct {
 	ID string `db:"id" goqu:"skipinsert"`
 
-	CreatedAt time.Time  `db:"created_at"`
+	CreatedAt time.Time  `db:"created_at" goqu:"skipinsert"`
 	UpdatedAt *time.Time `db:"updated_at"`
 
 	Address       Address   `db:"address"`
@@ -51,6 +51,17 @@ type User struct {
 	FirstName     string    `db:"first_name"`
 	Gender        string    `db:"gender"`
 	LastName      string    `db:"last_name"`
+}
+
+type Post struct {
+	ID     string `db:"id" goqu:"skipinsert"`
+	UserID string `db:"user_id"`
+
+	CreatedAt time.Time  `db:"created_at" goqu:"skipinsert"`
+	UpdatedAt *time.Time `db:"updated_at"`
+
+	Title   string `db:"title"`
+	Content string `db:"content"`
 }
 
 type UserIDs []string

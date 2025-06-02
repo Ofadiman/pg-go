@@ -15,4 +15,5 @@ func main() {
 	goqu.SelectMostRecentPostsWithRelatedRecords()
 	goqu.InsertUser()
 	goqu.InsertManyUsers()
+	goqu.InsertUserWithPosts()
 }
