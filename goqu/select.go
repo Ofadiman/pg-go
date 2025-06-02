@@ -229,7 +229,7 @@ func SelectMostRecentPostsWithRelatedRecords() {
 		).
 		Select(
 			goqu.T("recent_posts").Col("id").As("post_id"),
-			goqu.T("recent_posts").Col("author_id").As("post_user_id"),
+			goqu.T("recent_posts").Col("user_id").As("post_user_id"),
 			goqu.T("recent_posts").Col("title").As("post_title"),
 			goqu.T("recent_posts").Col("content").As("post_content"),
 			goqu.T("recent_posts").Col("created_at").As("post_created_at"),
@@ -245,7 +245,7 @@ func SelectMostRecentPostsWithRelatedRecords() {
 			goqu.T("users").Col("last_name").As("user_last_name"),
 			goqu.T("users").Col("gender").As("user_gender"),
 			goqu.T("comments").Col("id").As("comment_id"),
-			goqu.T("comments").Col("author_id").As("comment_user_id"),
+			goqu.T("comments").Col("user_id").As("comment_user_id"),
 			goqu.T("comments").Col("parent_id").As("comment_parent_id"),
 			goqu.T("comments").Col("post_id").As("comment_post_id"),
 			goqu.T("comments").Col("created_at").As("comment_created_at"),
@@ -253,13 +253,13 @@ func SelectMostRecentPostsWithRelatedRecords() {
 			goqu.T("comments").Col("content").As("comment_content"),
 			goqu.T("reactions").Col("id").As("reaction_id"),
 			goqu.T("reactions").Col("comment_id").As("reaction_comment_id"),
-			goqu.T("reactions").Col("author_id").As("reaction_user_id"),
+			goqu.T("reactions").Col("user_id").As("reaction_user_id"),
 			goqu.T("reactions").Col("created_at").As("reaction_created_at"),
 			goqu.T("reactions").Col("emoji").As("reaction_emoji"),
 		).
 		LeftJoin(
 			goqu.T("users"),
-			goqu.On(goqu.T("users").Col("id").Eq(goqu.T("recent_posts").Col("author_id"))),
+			goqu.On(goqu.T("users").Col("id").Eq(goqu.T("recent_posts").Col("user_id"))),
 		).
 		LeftJoin(
 			goqu.T("comments"),

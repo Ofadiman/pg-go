@@ -60,8 +60,8 @@ type User struct {
 }
 
 type Post struct {
-	ID       string `db:"id"`
-	AuthorID string `db:"author_id"`
+	ID     string `db:"id"`
+	UserID string `db:"user_id"`
 
 	CreatedAt time.Time  `db:"created_at"`
 	UpdatedAt *time.Time `db:"updated_at"`
@@ -72,7 +72,7 @@ type Post struct {
 
 type Comment struct {
 	ID       string  `db:"id"`
-	AuthorID string  `db:"author_id"`
+	UserID   string  `db:"user_id"`
 	PostID   string  `db:"post_id"`
 	ParentID *string `db:"parent_id"`
 
@@ -84,7 +84,7 @@ type Comment struct {
 
 type Reaction struct {
 	ID        string `db:"id"`
-	AuthorID  string `db:"author_id"`
+	UserID    string `db:"user_id"`
 	CommentID string `db:"comment_id"`
 
 	CreatedAt time.Time `db:"created_at"`
@@ -178,10 +178,10 @@ func Seed() {
 
 		for range postsCount {
 			post := Post{
-				ID:       gofakeit.UUID(),
-				AuthorID: user.ID,
-				Title:    gofakeit.LoremIpsumSentence(gofakeit.IntN(9) + 1),
-				Content:  gofakeit.LoremIpsumParagraph(1, gofakeit.IntN(4)+1, gofakeit.IntN(9)+1, " "),
+				ID:      gofakeit.UUID(),
+				UserID:  user.ID,
+				Title:   gofakeit.LoremIpsumSentence(gofakeit.IntN(9) + 1),
+				Content: gofakeit.LoremIpsumParagraph(1, gofakeit.IntN(4)+1, gofakeit.IntN(9)+1, " "),
 			}
 
 			post.CreatedAt = user.CreatedAt.Add(time.Hour * 24 * time.Duration(gofakeit.IntN(365)))
@@ -206,10 +206,10 @@ func Seed() {
 
 		for range commentsCount {
 			comment := Comment{
-				ID:       gofakeit.UUID(),
-				PostID:   post.ID,
-				AuthorID: users[gofakeit.IntN(len(users)-1)].ID,
-				Content:  gofakeit.LoremIpsumParagraph(1, gofakeit.IntN(4)+1, gofakeit.IntN(9)+1, " "),
+				ID:      gofakeit.UUID(),
+				PostID:  post.ID,
+				UserID:  users[gofakeit.IntN(len(users)-1)].ID,
+				Content: gofakeit.LoremIpsumParagraph(1, gofakeit.IntN(4)+1, gofakeit.IntN(9)+1, " "),
 			}
 
 			comment.CreatedAt = post.CreatedAt.Add(time.Hour * 24 * time.Duration(gofakeit.IntN(30)))
@@ -227,7 +227,7 @@ func Seed() {
 					nestedComment := Comment{
 						ID:       gofakeit.UUID(),
 						PostID:   post.ID,
-						AuthorID: users[gofakeit.IntN(len(users)-1)].ID,
+						UserID:   users[gofakeit.IntN(len(users)-1)].ID,
 						ParentID: &comment.ID,
 						Content:  gofakeit.LoremIpsumParagraph(1, gofakeit.IntN(4)+1, gofakeit.IntN(9)+1, " "),
 					}
@@ -257,7 +257,7 @@ func Seed() {
 		for range reactionsCount {
 			reaction := Reaction{
 				ID:        gofakeit.UUID(),
-				AuthorID:  users[gofakeit.IntN(len(users)-1)].ID,
+				UserID:    users[gofakeit.IntN(len(users)-1)].ID,
 				CommentID: comment.ID,
 				CreatedAt: comment.CreatedAt.Add(time.Hour * 24 * time.Duration(gofakeit.IntN(10))),
 				Emoji:     emojis[gofakeit.IntN(len(emojis)-1)],
