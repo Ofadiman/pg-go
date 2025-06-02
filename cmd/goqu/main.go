@@ -14,4 +14,5 @@ func main() {
 	goqu.SelectThreeMostPopularAgeGroups()
 	goqu.SelectMostRecentPostsWithRelatedRecords()
 	goqu.InsertUser()
+	goqu.InsertManyUsers()
 }

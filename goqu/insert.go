@@ -42,3 +42,75 @@ func InsertUser() {
 
 	utils.Save(utils.GetPackageName(), user)
 }
+
+func InsertManyUsers() {
+	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
+	if err != nil {
+		panic(err)
+	}
+	defer sqlxdb.Close()
+
+	sqlxdb.Exec("truncate table users cascade")
+
+	db := goqu.New("postgres", sqlxdb.DB)
+
+	statement := db.Insert("users").Rows([]User{
+		{
+			FirstName:     gofakeit.FirstName(),
+			LastName:      gofakeit.LastName(),
+			Email:         gofakeit.Email(),
+			EmailVerified: gofakeit.Bool(),
+			Gender:        gofakeit.Gender(),
+			Birthday:      gofakeit.PastDate(),
+			CreatedAt:     gofakeit.PastDate(),
+			Address: Address{
+				City:         gofakeit.City(),
+				Country:      gofakeit.Country(),
+				Street:       gofakeit.Street(),
+				StreetNumber: gofakeit.StreetNumber(),
+				ZipCode:      gofakeit.Zip(),
+			},
+		},
+		{
+			FirstName:     gofakeit.FirstName(),
+			LastName:      gofakeit.LastName(),
+			Email:         gofakeit.Email(),
+			EmailVerified: gofakeit.Bool(),
+			Gender:        gofakeit.Gender(),
+			Birthday:      gofakeit.PastDate(),
+			CreatedAt:     gofakeit.PastDate(),
+			Address: Address{
+				City:         gofakeit.City(),
+				Country:      gofakeit.Country(),
+				Street:       gofakeit.Street(),
+				StreetNumber: gofakeit.StreetNumber(),
+				ZipCode:      gofakeit.Zip(),
+			},
+		},
+		{
+			FirstName:     gofakeit.FirstName(),
+			LastName:      gofakeit.LastName(),
+			Email:         gofakeit.Email(),
+			EmailVerified: gofakeit.Bool(),
+			Gender:        gofakeit.Gender(),
+			Birthday:      gofakeit.PastDate(),
+			CreatedAt:     gofakeit.PastDate(),
+			Address: Address{
+				City:         gofakeit.City(),
+				Country:      gofakeit.Country(),
+				Street:       gofakeit.Street(),
+				StreetNumber: gofakeit.StreetNumber(),
+				ZipCode:      gofakeit.Zip(),
+			},
+		},
+	}).
+		Returning(goqu.Star())
+
+	var users []User
+	err = statement.Executor().ScanStructs(&users)
+	if err != nil {
+		panic(err)
+	}
+
+	utils.Save(utils.GetPackageName(), users)
+}
