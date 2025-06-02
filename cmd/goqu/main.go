@@ -12,4 +12,5 @@ func main() {
 	goqu.SelectNotOlderThanEighteenNorVerified()
 	goqu.SelectUserIDsByCountry()
 	goqu.SelectThreeMostPopularAgeGroups()
+	goqu.SelectMostRecentPostsWithRelatedRecords()
 }

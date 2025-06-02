@@ -204,3 +204,76 @@ func SelectThreeMostPopularAgeGroups() {
 
 	utils.Save(utils.GetPackageName(), mostPopularAgeGroups)
 }
+
+func SelectMostRecentPostsWithRelatedRecords() {
+	seed.Seed()
+
+	sqlxdb, err := sqlx.Connect("postgres", "postgres://admin:password@localhost:5432/pg-go?sslmode=disable")
+	if err != nil {
+		panic(err)
+	}
+	defer sqlxdb.Close()
+
+	db := goqu.New("postgres", sqlxdb.DB)
+
+	var recentPostsWithRelatedRecords []RecentPostWithRelatedRecords
+	statement := db.From("recent_posts").
+		With(
+			"recent_posts",
+			goqu.From("posts").
+				Select(
+					goqu.Star(),
+				).
+				Order(goqu.C("created_at").Desc()).
+				Limit(10),
+		).
+		Select(
+			goqu.T("recent_posts").Col("id").As("post_id"),
+			goqu.T("recent_posts").Col("author_id").As("post_user_id"),
+			goqu.T("recent_posts").Col("title").As("post_title"),
+			goqu.T("recent_posts").Col("content").As("post_content"),
+			goqu.T("recent_posts").Col("created_at").As("post_created_at"),
+			goqu.T("recent_posts").Col("updated_at").As("post_updated_at"),
+			goqu.T("users").Col("id").As("user_id"),
+			goqu.T("users").Col("created_at").As("user_created_at"),
+			goqu.T("users").Col("updated_at").As("user_updated_at"),
+			goqu.T("users").Col("address").As("user_address"),
+			goqu.T("users").Col("birthday").As("user_birthday"),
+			goqu.T("users").Col("email").As("user_email"),
+			goqu.T("users").Col("email_verified").As("user_email_verified"),
+			goqu.T("users").Col("first_name").As("user_first_name"),
+			goqu.T("users").Col("last_name").As("user_last_name"),
+			goqu.T("users").Col("gender").As("user_gender"),
+			goqu.T("comments").Col("id").As("comment_id"),
+			goqu.T("comments").Col("author_id").As("comment_user_id"),
+			goqu.T("comments").Col("parent_id").As("comment_parent_id"),
+			goqu.T("comments").Col("post_id").As("comment_post_id"),
+			goqu.T("comments").Col("created_at").As("comment_created_at"),
+			goqu.T("comments").Col("updated_at").As("comment_updated_at"),
+			goqu.T("comments").Col("content").As("comment_content"),
+			goqu.T("reactions").Col("id").As("reaction_id"),
+			goqu.T("reactions").Col("comment_id").As("reaction_comment_id"),
+			goqu.T("reactions").Col("author_id").As("reaction_user_id"),
+			goqu.T("reactions").Col("created_at").As("reaction_created_at"),
+			goqu.T("reactions").Col("emoji").As("reaction_emoji"),
+		).
+		LeftJoin(
+			goqu.T("users"),
+			goqu.On(goqu.T("users").Col("id").Eq(goqu.T("recent_posts").Col("author_id"))),
+		).
+		LeftJoin(
+			goqu.T("comments"),
+			goqu.On(goqu.T("comments").Col("post_id").Eq(goqu.T("recent_posts").Col("id"))),
+		).
+		LeftJoin(
+			goqu.T("reactions"),
+			goqu.On(goqu.T("reactions").Col("comment_id").Eq(goqu.T("comments").Col("id"))),
+		)
+
+	err = statement.Executor().ScanStructs(&recentPostsWithRelatedRecords)
+	if err != nil {
+		panic(err)
+	}
+
+	utils.Save(utils.GetPackageName(), recentPostsWithRelatedRecords)
+}

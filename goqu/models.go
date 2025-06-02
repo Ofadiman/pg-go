@@ -87,3 +87,37 @@ type MostPopularAgeGroup struct {
 	Total int `db:"total"`
 	Age   int `db:"age"`
 }
+
+type RecentPostWithRelatedRecords struct {
+	PostID        string     `db:"post_id"`
+	PostUserID    string     `db:"post_user_id"`
+	PostCreatedAt time.Time  `db:"post_created_at"`
+	PostUpdatedAt *time.Time `db:"post_updated_at"`
+	PostContent   string     `db:"post_content"`
+	PostTitle     string     `db:"post_title"`
+
+	UserID            string     `db:"user_id"`
+	UserCreatedAt     time.Time  `db:"user_created_at"`
+	UserUpdatedAt     *time.Time `db:"user_updated_at"`
+	UserAddress       Address    `db:"user_address"`
+	UserBirthday      time.Time  `db:"user_birthday"`
+	UserEmail         string     `db:"user_email"`
+	UserEmailVerified bool       `db:"user_email_verified"`
+	UserFirstName     string     `db:"user_first_name"`
+	UserGender        string     `db:"user_gender"`
+	UserLastName      string     `db:"user_last_name"`
+
+	CommentID        *string    `db:"comment_id"`
+	CommentUserID    *string    `db:"comment_user_id"`
+	CommentParentID  *string    `db:"comment_parent_id"`
+	CommentPostID    *string    `db:"comment_post_id"`
+	CommentCreatedAt *time.Time `db:"comment_created_at"`
+	CommentUpdatedAt *time.Time `db:"comment_updated_at"`
+	CommentContent   *string    `db:"comment_content"`
+
+	ReactionID        *string    `db:"reaction_id"`
+	ReactionCommentID *string    `db:"reaction_comment_id"`
+	ReactionUserID    *string    `db:"reaction_user_id"`
+	ReactionCreatedAt *time.Time `db:"reaction_created_at"`
+	ReactionEmoji     *string    `db:"reaction_emoji"`
+}
