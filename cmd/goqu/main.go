@@ -16,4 +16,5 @@ func main() {
 	goqu.InsertUser()
 	goqu.InsertManyUsers()
 	goqu.InsertUserWithPosts()
+	goqu.UpdateUserById()
 }

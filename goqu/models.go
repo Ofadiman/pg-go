@@ -132,3 +132,9 @@ type RecentPostWithRelatedRecords struct {
 	ReactionCreatedAt *time.Time `db:"reaction_created_at"`
 	ReactionEmoji     *string    `db:"reaction_emoji"`
 }
+
+type UpdateUser struct {
+	FirstName string    `db:"first_name"`
+	LastName  string    `db:"last_name"`
+	UpdatedAt time.Time `db:"updated_at"`
+}
