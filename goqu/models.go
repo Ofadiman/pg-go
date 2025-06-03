@@ -133,8 +133,13 @@ type RecentPostWithRelatedRecords struct {
 	ReactionEmoji     *string    `db:"reaction_emoji"`
 }
 
-type UpdateUser struct {
+type UpdateUserData struct {
 	FirstName string    `db:"first_name"`
 	LastName  string    `db:"last_name"`
 	UpdatedAt time.Time `db:"updated_at"`
+}
+
+type UpdateUnderageUsersData struct {
+	EmailVerified bool      `db:"email_verified"`
+	UpdatedAt     time.Time `db:"updated_at"`
 }

@@ -17,4 +17,5 @@ func main() {
 	goqu.InsertManyUsers()
 	goqu.InsertUserWithPosts()
 	goqu.UpdateUserById()
+	goqu.UpdateUnderageUsers()
 }
