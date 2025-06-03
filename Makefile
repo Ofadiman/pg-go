@@ -12,17 +12,17 @@ export GOOSE_DRIVER = postgres
 export GOOSE_MIGRATION_DIR = ./migrations
 
 help:  ## Show this help menu.
-	@awk 'BEGIN {FS = ":.*##"} \
-		/^[a-zA-Z0-9_-]+:.*##/ { \
-			if(length($$1)>max) max=length($$1); \
-			help[$$1]=$$2; \
-			targets[++n]=$$1 \
-		} \
+	grep -E '^[a-zA-Z0-9_-]+:.*##' $(MAKEFILE_LIST) | \
+	sort | \
+	awk -F ':.*##' ' \
+		NR==1{max=0} \
+		{if(length($$1)>max) max=length($$1); lines[NR]=$$0} \
 		END { \
-			asort(targets); \
-			for (i=1; i<=n; i++) \
-				printf "\033[36m%-*s\033[0m %s\n", max+2, targets[i], help[targets[i]] \
-		}' $(MAKEFILE_LIST)
+			for(i=1; i<=NR; i++) { \
+				split(lines[i], parts, ":.*##"); \
+				printf "\033[36m%-*s\033[0m %s\n", max+2, parts[1], parts[2] \
+			} \
+		}'
 
 database_recreate_public_schema:  ## Drop and recreate the public schema in the database.
 	docker compose exec postgres psql -U admin -d pg-go -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public;"
