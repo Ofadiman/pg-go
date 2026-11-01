@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 	"time"
@@ -17,6 +18,8 @@ import (
 )
 
 var update = flag.Bool("update", false, "rewrite golden files")
+
+var randomSavepoint = regexp.MustCompile(`\bsp[0-9]{6,}\b`)
 
 type run struct {
 	scenario  string
@@ -119,6 +122,7 @@ func checkSQL(t *testing.T, r *run) {
 		b.WriteString(";\n")
 	}
 	got := r.replacer().Replace(b.String())
+	got = randomSavepoint.ReplaceAllString(got, "sp<random>")
 
 	path := filepath.Join("testdata", "sql", r.scenario, r.impl+".sql")
 	if *update {

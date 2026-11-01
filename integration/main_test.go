@@ -10,6 +10,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/stdlib"
+	"github.com/ofadiman/pg-go/gormrepo"
 	"github.com/ofadiman/pg-go/goqurepo"
 	"github.com/ofadiman/pg-go/migrations"
 	"github.com/ofadiman/pg-go/repository"
@@ -30,6 +31,7 @@ var implementations = []struct {
 }{
 	{"goqu", goqurepo.New},
 	{"squirrel", squirrelrepo.New},
+	{"gorm", gormrepo.New},
 }
 
 var (

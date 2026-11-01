@@ -1,0 +1,5 @@
+SELECT "posts"."id","posts"."user_id","posts"."created_at","posts"."updated_at","posts"."title","posts"."content","Author"."id" AS "Author__id","Author"."created_at" AS "Author__created_at","Author"."updated_at" AS "Author__updated_at","Author"."address" AS "Author__address","Author"."birthday" AS "Author__birthday","Author"."email" AS "Author__email","Author"."email_verified" AS "Author__email_verified","Author"."first_name" AS "Author__first_name","Author"."gender" AS "Author__gender","Author"."last_name" AS "Author__last_name" FROM "posts" LEFT JOIN "users" "Author" ON "posts"."user_id" = "Author"."id" ORDER BY posts.created_at DESC, posts.id ASC LIMIT $1;
+
+SELECT * FROM "comments" WHERE "comments"."post_id" IN ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) ORDER BY created_at ASC, id ASC;
+
+SELECT * FROM "reactions" WHERE "reactions"."comment_id" IN ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,$30,$31,$32,$33,$34,$35,$36,$37,$38,$39) ORDER BY created_at ASC, id ASC;
