@@ -94,11 +94,10 @@ func (r users) Upsert(ctx context.Context, in repository.NewUser) (repository.Us
 		Clauses(
 			clause.OnConflict{
 				Columns: []clause.Column{{Name: "email"}},
-				DoUpdates: clause.Assignments(map[string]any{
-					"first_name": gorm.Expr("excluded.first_name"),
-					"last_name":  gorm.Expr("excluded.last_name"),
-					"updated_at": now,
-				}),
+				DoUpdates: append(
+					clause.AssignmentColumns([]string{"first_name", "last_name"}),
+					clause.Assignment{Column: clause.Column{Name: "updated_at"}, Value: now},
+				),
 			},
 			clause.Returning{},
 		).
