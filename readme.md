@@ -9,7 +9,3 @@
 - **Transactions**: Support for database transactions.
 - **Common Table Expressions (CTE)**: Support for `WITH` queries.
 - **Aggregate functions**: Support for SQL aggregate functions like `COUNT`, `SUM`, etc.
-
-## Help
-
-Makefile has documentation available under `make help`.
