@@ -91,7 +91,7 @@ type commentRow struct {
 	PostID    string
 	ParentID  *string
 	CreatedAt time.Time
-	UpdatedAt *time.Time    `gorm:"autoUpdateTime:false"`
+	UpdatedAt *time.Time `gorm:"autoUpdateTime:false"`
 	Content   string
 	Reactions []reactionRow `gorm:"foreignKey:CommentID"`
 }
