@@ -1,0 +1,1 @@
+WITH RECURSIVE thread AS (SELECT *, 0 AS depth FROM comments WHERE id = $1 UNION ALL SELECT c.*, t.depth + 1 FROM comments AS c JOIN thread AS t ON c.parent_id = t.id) SELECT id, user_id, post_id, parent_id, created_at, updated_at, content, depth FROM thread ORDER BY depth ASC, created_at ASC, id ASC;

@@ -14,6 +14,7 @@ import (
 	"github.com/ofadiman/pg-go/migrations"
 	"github.com/ofadiman/pg-go/repository"
 	"github.com/ofadiman/pg-go/seed"
+	"github.com/ofadiman/pg-go/squirrelrepo"
 	"github.com/pressly/goose/v3"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
@@ -28,6 +29,7 @@ var implementations = []struct {
 	new  func(*sql.DB, func() time.Time) (repository.Store, error)
 }{
 	{"goqu", goqurepo.New},
+	{"squirrel", squirrelrepo.New},
 }
 
 var (

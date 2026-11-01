@@ -1,0 +1,1 @@
+SELECT u.id AS user_id, u.first_name, u.last_name, count(distinct p.id) AS post_count, count(distinct c.id) AS comment_count, max(p.created_at) AS last_post_at FROM users AS u JOIN posts AS p ON p.user_id = u.id LEFT JOIN comments AS c ON c.post_id = p.id GROUP BY u.id HAVING count(distinct p.id) >= $1 ORDER BY post_count DESC, u.id ASC;

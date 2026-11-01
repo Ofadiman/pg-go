@@ -1,0 +1,1 @@
+WITH ranked AS (SELECT extract(year from age($1, birthday))::int AS age, count(*) AS total, dense_rank() over (order by count(*) desc) AS rank FROM users GROUP BY age) SELECT age, total FROM ranked WHERE rank <= $2 ORDER BY total DESC, age ASC;
