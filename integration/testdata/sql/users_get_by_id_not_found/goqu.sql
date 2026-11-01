@@ -1,0 +1,1 @@
+SELECT "address", "birthday", "created_at", "email", "email_verified", "first_name", "gender", "id", "last_name", "updated_at" FROM "users" WHERE ("id" = '00000000-0000-0000-0000-999999999999') LIMIT 1;

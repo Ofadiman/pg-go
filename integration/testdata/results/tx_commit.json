@@ -1,0 +1,46 @@
+{
+  "User": {
+    "ID": "<generated-1>",
+    "CreatedAt": "2026-01-01T00:00:00Z",
+    "UpdatedAt": null,
+    "Address": {
+      "city": "Gdansk",
+      "country": "Poland",
+      "street": "Long Market",
+      "street_number": "1",
+      "zip_code": "80-001"
+    },
+    "Birthday": "1991-02-02T00:00:00Z",
+    "Email": "new-user-1@example.com",
+    "EmailVerified": false,
+    "FirstName": "First1",
+    "Gender": "male",
+    "LastName": "Last1"
+  },
+  "Posts": [
+    {
+      "ID": "<generated-2>",
+      "UserID": "<generated-1>",
+      "CreatedAt": "2026-01-01T00:00:00Z",
+      "UpdatedAt": null,
+      "Title": "Transaction post 1",
+      "Content": "Content of transaction post 1."
+    },
+    {
+      "ID": "<generated-3>",
+      "UserID": "<generated-1>",
+      "CreatedAt": "2026-01-01T00:00:00Z",
+      "UpdatedAt": null,
+      "Title": "Transaction post 2",
+      "Content": "Content of transaction post 2."
+    },
+    {
+      "ID": "<generated-4>",
+      "UserID": "<generated-1>",
+      "CreatedAt": "2026-01-01T00:00:00Z",
+      "UpdatedAt": null,
+      "Title": "Transaction post 3",
+      "Content": "Content of transaction post 3."
+    }
+  ]
+}

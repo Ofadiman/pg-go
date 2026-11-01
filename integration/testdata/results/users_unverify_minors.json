@@ -1,0 +1,146 @@
+[
+  {
+    "ID": "00000000-0000-0000-0000-000000000003",
+    "CreatedAt": "2018-03-13T21:00:00Z",
+    "UpdatedAt": "2026-01-01T00:00:00Z",
+    "Address": {
+      "city": "Oslo",
+      "country": "Norway",
+      "street": "Hill Road",
+      "street_number": "40",
+      "zip_code": "23757"
+    },
+    "Birthday": "2015-06-10T00:00:00Z",
+    "Email": "user-3@example.com",
+    "EmailVerified": false,
+    "FirstName": "Felix",
+    "Gender": "male",
+    "LastName": "Parker"
+  },
+  {
+    "ID": "00000000-0000-0000-0000-000000000009",
+    "CreatedAt": "2019-08-03T15:00:00Z",
+    "UpdatedAt": "2026-01-01T00:00:00Z",
+    "Address": {
+      "city": "Madrid",
+      "country": "Spain",
+      "street": "Cedar Drive",
+      "street_number": "118",
+      "zip_code": "71271"
+    },
+    "Birthday": "2013-04-25T00:00:00Z",
+    "Email": "user-9@example.com",
+    "EmailVerified": false,
+    "FirstName": "Henry",
+    "Gender": "male",
+    "LastName": "Zimmer"
+  },
+  {
+    "ID": "00000000-0000-0000-0000-000000000015",
+    "CreatedAt": "2015-12-24T09:00:00Z",
+    "UpdatedAt": "2026-01-01T00:00:00Z",
+    "Address": {
+      "city": "Krakow",
+      "country": "Poland",
+      "street": "Elm Street",
+      "street_number": "196",
+      "zip_code": "18785"
+    },
+    "Birthday": "2011-03-10T00:00:00Z",
+    "Email": "user-15@example.com",
+    "EmailVerified": false,
+    "FirstName": "Jack",
+    "Gender": "male",
+    "LastName": "Garcia"
+  },
+  {
+    "ID": "00000000-0000-0000-0000-000000000021",
+    "CreatedAt": "2017-05-15T03:00:00Z",
+    "UpdatedAt": "2026-01-01T00:00:00Z",
+    "Address": {
+      "city": "Berlin",
+      "country": "Germany",
+      "street": "Oak Avenue",
+      "street_number": "74",
+      "zip_code": "66299"
+    },
+    "Birthday": "2009-01-23T00:00:00Z",
+    "Email": "user-21@example.com",
+    "EmailVerified": false,
+    "FirstName": "Liam",
+    "Gender": "male",
+    "LastName": "Nelson"
+  },
+  {
+    "ID": "00000000-0000-0000-0000-000000000059",
+    "CreatedAt": "2017-11-05T05:00:00Z",
+    "UpdatedAt": "2026-01-01T00:00:00Z",
+    "Address": {
+      "city": "Madrid",
+      "country": "Spain",
+      "street": "Hill Road",
+      "street_number": "168",
+      "zip_code": "67221"
+    },
+    "Birthday": "2015-08-05T00:00:00Z",
+    "Email": "user-59@example.com",
+    "EmailVerified": false,
+    "FirstName": "Andrew",
+    "Gender": "male",
+    "LastName": "Turner"
+  },
+  {
+    "ID": "00000000-0000-0000-0000-000000000065",
+    "CreatedAt": "2019-03-28T23:00:00Z",
+    "UpdatedAt": "2026-01-01T00:00:00Z",
+    "Address": {
+      "city": "Krakow",
+      "country": "Poland",
+      "street": "Cedar Drive",
+      "street_number": "46",
+      "zip_code": "14735"
+    },
+    "Birthday": "2013-06-20T00:00:00Z",
+    "Email": "user-65@example.com",
+    "EmailVerified": false,
+    "FirstName": "Anthony",
+    "Gender": "male",
+    "LastName": "Davis"
+  },
+  {
+    "ID": "00000000-0000-0000-0000-000000000071",
+    "CreatedAt": "2015-08-18T17:00:00Z",
+    "UpdatedAt": "2026-01-01T00:00:00Z",
+    "Address": {
+      "city": "Berlin",
+      "country": "Germany",
+      "street": "Elm Street",
+      "street_number": "124",
+      "zip_code": "62249"
+    },
+    "Birthday": "2011-05-05T00:00:00Z",
+    "Email": "user-71@example.com",
+    "EmailVerified": false,
+    "FirstName": "Brian",
+    "Gender": "male",
+    "LastName": "King"
+  },
+  {
+    "ID": "00000000-0000-0000-0000-000000000077",
+    "CreatedAt": "2017-01-07T11:00:00Z",
+    "UpdatedAt": "2026-01-01T00:00:00Z",
+    "Address": {
+      "city": "Boston",
+      "country": "United States",
+      "street": "Oak Avenue",
+      "street_number": "2",
+      "zip_code": "09763"
+    },
+    "Birthday": "2009-03-20T00:00:00Z",
+    "Email": "user-77@example.com",
+    "EmailVerified": false,
+    "FirstName": "Daniel",
+    "Gender": "male",
+    "LastName": "Reed"
+  }
+]

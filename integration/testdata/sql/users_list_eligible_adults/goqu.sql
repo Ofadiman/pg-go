@@ -1,0 +1,1 @@
+SELECT "address", "birthday", "created_at", "email", "email_verified", "first_name", "gender", "id", "last_name", "updated_at" FROM "users" WHERE (("email_verified" IS TRUE) AND ((("gender" = 'male') AND (age('2026-01-01T00:00:00Z', birthday) >= interval '21 years')) OR (("gender" = 'female') AND (age('2026-01-01T00:00:00Z', birthday) >= interval '18 years')))) ORDER BY "id" ASC;

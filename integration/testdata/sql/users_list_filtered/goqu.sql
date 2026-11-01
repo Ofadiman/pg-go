@@ -1,0 +1,3 @@
+SELECT COUNT(*) AS "count" FROM "users" WHERE (("first_name" LIKE 'An%') AND ("gender" = 'female') AND ("email_verified" IS TRUE) AND ("birthday" > '1970-01-01T00:00:00Z') AND ("birthday" < '2005-01-01T00:00:00Z')) LIMIT 1;
+
+SELECT "address", "birthday", "created_at", "email", "email_verified", "first_name", "gender", "id", "last_name", "updated_at" FROM "users" WHERE (("first_name" LIKE 'An%') AND ("gender" = 'female') AND ("email_verified" IS TRUE) AND ("birthday" > '1970-01-01T00:00:00Z') AND ("birthday" < '2005-01-01T00:00:00Z')) ORDER BY "last_name" ASC, "birthday" DESC, "id" ASC LIMIT 3 OFFSET 3;

@@ -1,0 +1,28 @@
+{
+  "Post": {
+    "ID": "00000000-0000-0000-0001-000000000001",
+    "UserID": "00000000-0000-0000-0000-000000000001",
+    "CreatedAt": "2016-06-02T08:00:00Z",
+    "UpdatedAt": "2016-06-04T08:00:00Z",
+    "Title": "Context cancellation #1",
+    "Content": "Notes on context cancellation from user 1, part 1."
+  },
+  "Author": {
+    "ID": "00000000-0000-0000-0000-000000000001",
+    "CreatedAt": "2016-01-25T07:00:00Z",
+    "UpdatedAt": "2016-02-06T07:00:00Z",
+    "Address": {
+      "city": "Berlin",
+      "country": "Germany",
+      "street": "Cedar Drive",
+      "street_number": "14",
+      "zip_code": "07919"
+    },
+    "Birthday": "1997-02-24T00:00:00Z",
+    "Email": "user-1@example.com",
+    "EmailVerified": true,
+    "FirstName": "Liam",
+    "Gender": "male",
+    "LastName": "Foster"
+  }
+}

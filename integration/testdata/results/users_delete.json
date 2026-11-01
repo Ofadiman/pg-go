@@ -1,0 +1,18 @@
+{
+  "ID": "00000000-0000-0000-0000-000000000100",
+  "CreatedAt": "2016-07-08T04:00:00Z",
+  "UpdatedAt": null,
+  "Address": {
+    "city": "Omaha",
+    "country": "United States",
+    "street": "Pine Lane",
+    "street_number": "101",
+    "zip_code": "91900"
+  },
+  "Birthday": "1992-07-24T00:00:00Z",
+  "Email": "user-100@example.com",
+  "EmailVerified": true,
+  "FirstName": "Anna",
+  "Gender": "female",
+  "LastName": "Reed"
+}

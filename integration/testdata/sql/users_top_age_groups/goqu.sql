@@ -1,0 +1,1 @@
+WITH ranked AS (SELECT extract(year from age('2026-01-01T00:00:00Z', birthday))::int AS "age", COUNT(*) AS "total", dense_rank() over (order by count(*) desc) AS "rank" FROM "users" GROUP BY "age") SELECT "age", "total" FROM "ranked" WHERE ("rank" <= 3) ORDER BY "total" DESC, "age" ASC;

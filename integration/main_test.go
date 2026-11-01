@@ -8,8 +8,11 @@ import (
 	"testing"
 	"time"
 
-	_ "github.com/jackc/pgx/v5/stdlib"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/stdlib"
+	"github.com/ofadiman/pg-go/goqurepo"
 	"github.com/ofadiman/pg-go/migrations"
+	"github.com/ofadiman/pg-go/repository"
 	"github.com/ofadiman/pg-go/seed"
 	"github.com/pressly/goose/v3"
 	"github.com/testcontainers/testcontainers-go"
@@ -20,16 +23,23 @@ const image = "postgres:17.4-bookworm@sha256:7f29c02ba9eeff4de9a9f414d803faa0e6f
 
 var now = time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)
 
+var implementations = []struct {
+	name string
+	new  func(*sql.DB, func() time.Time) (repository.Store, error)
+}{
+	{"goqu", goqurepo.New},
+}
+
 var (
 	container *postgres.PostgresContainer
 	dsn       string
 )
 
 func TestMain(m *testing.M) {
-	os.Exit(run(m))
+	os.Exit(runTests(m))
 }
 
-func run(m *testing.M) int {
+func runTests(m *testing.M) int {
 	time.Local = time.UTC
 	ctx := context.Background()
 
@@ -88,18 +98,22 @@ func prepare(ctx context.Context) error {
 	return seed.Run(ctx, db)
 }
 
-func newDB(t *testing.T) *sql.DB {
+func newDB(t *testing.T) (*sql.DB, *recorder) {
 	t.Helper()
 
 	if err := container.Restore(t.Context()); err != nil {
 		t.Fatalf("restore database: %v", err)
 	}
 
-	db, err := sql.Open("pgx", dsn)
+	config, err := pgx.ParseConfig(dsn)
 	if err != nil {
-		t.Fatalf("open database: %v", err)
+		t.Fatalf("parse connection string: %v", err)
 	}
+	rec := &recorder{}
+	config.Tracer = rec
+
+	db := stdlib.OpenDB(*config)
 	t.Cleanup(func() { db.Close() })
 
-	return db
+	return db, rec
 }

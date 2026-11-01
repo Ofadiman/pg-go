@@ -7,7 +7,7 @@ import (
 )
 
 func TestSeed(t *testing.T) {
-	db := newDB(t)
+	db, _ := newDB(t)
 
 	t.Run("row counts", func(t *testing.T) {
 		tables := []struct {
